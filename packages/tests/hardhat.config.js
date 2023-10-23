@@ -62,8 +62,7 @@ module.exports = {
 	solidity: {
 		compilers: [
 			{
-				version: '0.8.0',
-				path: "/usr/local/bin/solc",
+				version: '0.8.17',
 			  },
 		],
 	},

@@ -4,7 +4,7 @@ import assert from "assert";
 
 import { quais } from "quais";
 import { loadTests } from "@quais/testcases";
-
+const hre = require("hardhat");
 
 const bnify = quais.BigNumber.from;
 
@@ -634,11 +634,22 @@ describe("Test ParamType Parser", function() {
 });
 
 describe('Test EIP-838 Error Codes', function() {
-    const addr = "0x0932cA789ee4b109B78DB2bAD0253cCEabE064F8";
-    const network = process.env.CYPRUS1URL || "http://localhost:8610"
+    const network = process.env.CYPRUS1URL || "http://localhost:8610";
+    let provider: any;
+    //let quaisContract;
+    let addr : string;
+    let testAddr: string;
 
+    this.timeout(20000);
+
+    before(async () => {
+        provider = new quais.providers.JsonRpcProvider(network);
+        const walletWithProvider = new quais.Wallet(hre.network.config.accounts[0], provider);
+        testAddr = walletWithProvider.address;
+    
+        addr = '0x1baCba88356Eab303A5e364086fDc5ea93B609Cb'
+    });
     it("testError1", async function () {
-        const provider = new quais.providers.JsonRpcProvider(network);
         const contract = new quais.Contract(addr, [
             "function testError1(bool pass, address addr, uint256 value) pure returns (bool)",
             "function testError2(bool pass, bytes data) pure returns (bool)",
@@ -647,16 +658,15 @@ describe('Test EIP-838 Error Codes', function() {
         ], provider);
 
         try {
-            const result = await contract.testError1(false, addr, 42);
+            const result = await contract.testError1(false, testAddr, 42);
             console.log(result);
             assert.ok(false, "did not throw ");
         } catch (error) {
-            console.log('ERROR: ', JSON.stringify(error));
             assert.equal(error.code, quais.utils.Logger.errors.CALL_EXCEPTION, "error.code");
             assert.equal(error.errorSignature, "TestError1(address,uint256)", "error.errorSignature");
             assert.equal(error.errorName, "TestError1", "error.errorName");
-            assert.equal(error.errorArgs[0], addr, "error.errorArgs[0]");
-            assert.equal(error.errorArgs.addr, addr, "error.errorArgs.addr");
+            assert.equal(error.errorArgs[0], testAddr, "error.errorArgs[0]");
+            assert.equal(error.errorArgs.addr, testAddr, "error.errorArgs.addr");
             assert.equal(error.errorArgs[1], 42, "error.errorArgs[1]");
             assert.equal(error.errorArgs.value, 42, "error.errorArgs.value");
         }

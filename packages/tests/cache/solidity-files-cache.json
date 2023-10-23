@@ -2,11 +2,11 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/denis26/Desktop/QUAI/quais-5.js/packages/tests/contracts/EIP-838ErrorCodes.sol": {
-      "lastModificationDate": 1698080722488,
-      "contentHash": "ebe881de015bf4372ac3c5a7931c3062",
+      "lastModificationDate": 1698092316739,
+      "contentHash": "40b582df92948c50c21e1a4e56c9e6ab",
       "sourceName": "contracts/EIP-838ErrorCodes.sol",
       "solcConfig": {
-        "version": "0.8.0",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -33,15 +33,15 @@
         "^0.8.0"
       ],
       "artifacts": [
-        "TestContract"
+        "eip838errors"
       ]
     },
     "/Users/denis26/Desktop/QUAI/quais-5.js/packages/tests/contracts/test-solc/consumer.sol": {
-      "lastModificationDate": 1698080709398,
+      "lastModificationDate": 1698092281423,
       "contentHash": "46022da0079600813ffb6c50accf99ae",
       "sourceName": "contracts/test-solc/consumer.sol",
       "solcConfig": {
-        "version": "0.8.0",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": false,
@@ -74,11 +74,11 @@
       ]
     },
     "/Users/denis26/Desktop/QUAI/quais-5.js/packages/tests/contracts/test-solc/libraries/lib.sol": {
-      "lastModificationDate": 1698080649649,
+      "lastModificationDate": 1698092281424,
       "contentHash": "fbd081c8b2a61981a07422b2be321c68",
       "sourceName": "contracts/test-solc/libraries/lib.sol",
       "solcConfig": {
-        "version": "0.8.0",
+        "version": "0.8.17",
         "settings": {
           "optimizer": {
             "enabled": false,
