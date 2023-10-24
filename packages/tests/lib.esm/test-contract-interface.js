@@ -524,13 +524,20 @@ describe('Test EIP-838 Error Codes', function () {
     let testAddr;
     this.timeout(20000);
     before(() => __awaiter(this, void 0, void 0, function* () {
-        provider = new quais.providers.JsonRpcProvider(network);
+        const ethersContract = yield hre.ethers.getContractFactory('eip838errors');
+        provider = yield new quais.providers.JsonRpcProvider(network);
         const walletWithProvider = new quais.Wallet(hre.network.config.accounts[0], provider);
         testAddr = walletWithProvider.address;
-        addr = '0x1baCba88356Eab303A5e364086fDc5ea93B609Cb';
+        const QuaisContract = new quais.ContractFactory(ethersContract.interface.fragments, ethersContract.bytecode, walletWithProvider);
+        const quaisContract = yield QuaisContract.deploy({ gasLimit: 4000000 });
+        //await quaisContract.deployed();
+        addr = quaisContract.address;
+        console.log('Deployed contract at: ', addr);
+        yield new Promise(resolve => setTimeout(resolve, 10000));
     }));
     it("testError1", function () {
         return __awaiter(this, void 0, void 0, function* () {
+            console.log('Contract address: \n', addr);
             const contract = new quais.Contract(addr, [
                 "function testError1(bool pass, address addr, uint256 value) pure returns (bool)",
                 "function testError2(bool pass, bytes data) pure returns (bool)",

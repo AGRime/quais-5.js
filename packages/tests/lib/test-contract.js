@@ -56,7 +56,6 @@ function setUpContract() {
                     walletWithProvider = new quais_1.quais.Wallet(hre.network.config.accounts[0], provider);
                     QuaisContract = new quais_1.quais.ContractFactory(ethersContract.interface.fragments, ethersContract.bytecode, walletWithProvider);
                     return [4 /*yield*/, QuaisContract.deploy({ gasLimit: 4000000 }).then(function (contract) {
-                            console.log("Contract: \n", contract);
                             return contract;
                         })];
                 case 2:

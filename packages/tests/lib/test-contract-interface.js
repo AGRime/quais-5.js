@@ -556,13 +556,29 @@ describe('Test EIP-838 Error Codes', function () {
     var testAddr;
     this.timeout(20000);
     before(function () { return __awaiter(_this, void 0, void 0, function () {
-        var walletWithProvider;
+        var ethersContract, walletWithProvider, QuaisContract, quaisContract;
         return __generator(this, function (_a) {
-            provider = new quais_1.quais.providers.JsonRpcProvider(network);
-            walletWithProvider = new quais_1.quais.Wallet(hre.network.config.accounts[0], provider);
-            testAddr = walletWithProvider.address;
-            addr = '0x1baCba88356Eab303A5e364086fDc5ea93B609Cb';
-            return [2 /*return*/];
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, hre.ethers.getContractFactory('eip838errors')];
+                case 1:
+                    ethersContract = _a.sent();
+                    return [4 /*yield*/, new quais_1.quais.providers.JsonRpcProvider(network)];
+                case 2:
+                    provider = _a.sent();
+                    walletWithProvider = new quais_1.quais.Wallet(hre.network.config.accounts[0], provider);
+                    testAddr = walletWithProvider.address;
+                    QuaisContract = new quais_1.quais.ContractFactory(ethersContract.interface.fragments, ethersContract.bytecode, walletWithProvider);
+                    return [4 /*yield*/, QuaisContract.deploy({ gasLimit: 4000000 })];
+                case 3:
+                    quaisContract = _a.sent();
+                    //await quaisContract.deployed();
+                    addr = quaisContract.address;
+                    console.log('Deployed contract at: ', addr);
+                    return [4 /*yield*/, new Promise(function (resolve) { return setTimeout(resolve, 10000); })];
+                case 4:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
         });
     }); });
     it("testError1", function () {
@@ -571,6 +587,7 @@ describe('Test EIP-838 Error Codes', function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        console.log('Contract address: \n', addr);
                         contract = new quais_1.quais.Contract(addr, [
                             "function testError1(bool pass, address addr, uint256 value) pure returns (bool)",
                             "function testError2(bool pass, bytes data) pure returns (bool)",
