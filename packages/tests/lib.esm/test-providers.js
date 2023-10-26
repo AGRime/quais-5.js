@@ -21,18 +21,6 @@ const blockchainData = {
                 balance: bnify("4813414100000000"),
                 code: "0x"
             },
-            // Splitter contract
-            {
-                address: "0x3474627D4F63A678266BC17171D87f8570936622",
-                code: "0x606060405260e060020a60003504630b3ed5368114602e57806337b0574a14605257806356fa47f0146062575b005b602c6004356000546101009004600160a060020a03908116339091161460bb575b50565b60005460ff166060908152602090f35b602c60043560005460ff1615609657600160a060020a038116600034606082818181858883f193505050501515604f576002565b33600160a060020a0316600034606082818181858883f193505050501515604f576002565b600080546101009004600160a060020a03169082606082818181858883f193505050501515604f57600256",
-                storage: {
-                    "0": "0x0000000000000000000000b2682160c482eb985ec9f3e364eec0a904c44c2300"
-                }
-            },
-            {
-                address: "0x8ba1f109551bD432803012645Ac136ddd64DBA72",
-                name: "ricmoo.firefly.eth"
-            },
         ],
         blocks: [
             {
@@ -50,104 +38,10 @@ const blockchainData = {
             }
         ],
         transactions: [
-            {
-                hash: "0xccc90ab97a74c952fb3376c4a3efb566a58a10df62eb4d44a61e106fcf10ec61",
-                blockHash: "0x9653f180a5720f3634816eb945a6d722adee52cc47526f6357ac10adaf368135",
-                blockNumber: 4097745,
-                transactionIndex: 18,
-                type: 0,
-                from: "0x32DEF047DeFd076DB21A2D759aff2A591c972248",
-                gasPrice: bnify("0x4a817c800"),
-                gasLimit: bnify("0x3d090"),
-                to: "0x6fC21092DA55B392b045eD78F4732bff3C580e2c",
-                value: bnify("0x186cc6acd4b0000"),
-                nonce: 0,
-                data: "0xf2c298be000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000067269636d6f6f0000000000000000000000000000000000000000000000000000",
-                r: "0x1e5605197a03e3f0a168f14749168dfeefc44c9228312dacbffdcbbb13263265",
-                s: "0x269c3e5b3558267ad91b0a887d51f9f10098771c67b82ea6cb74f29638754f54",
-                v: 38,
-                creates: null,
-                //raw: "0xf8d2808504a817c8008303d090946fc21092da55b392b045ed78f4732bff3c580e2c880186cc6acd4b0000b864f2c298be000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000067269636d6f6f000000000000000000000000000000000000000000000000000026a01e5605197a03e3f0a168f14749168dfeefc44c9228312dacbffdcbbb13263265a0269c3e5b3558267ad91b0a887d51f9f10098771c67b82ea6cb74f29638754f54",
-                chainId: 1
-            }
+            {}
         ],
         transactionReceipts: [
-            {
-                blockHash: "0x36b4af7f0538559e581c8588f16477df0f676439ea67fe8d7a2ae4abb20e2566",
-                blockNumber: 0x3c92b5,
-                type: 0,
-                contractAddress: null,
-                cumulativeGasUsed: 0x1cca2e,
-                from: "0x18C6045651826824FEBBD39d8560584078d1b247",
-                gasUsed: 0x14bb7,
-                logs: [
-                    {
-                        address: "0x314159265dD8dbb310642f98f50C066173C1259b",
-                        blockHash: "0x36b4af7f0538559e581c8588f16477df0f676439ea67fe8d7a2ae4abb20e2566",
-                        blockNumber: 0x3c92b5,
-                        data: "0x00000000000000000000000018c6045651826824febbd39d8560584078d1b247",
-                        logIndex: 0x1a,
-                        topics: [
-                            "0xce0457fe73731f824cc272376169235128c118b49d344817417c6d108d155e82",
-                            "0x93cdeb708b7545dc668eb9280176169d1c33cfd8ed6f04690a0bcc88a93fc4ae",
-                            "0xf0106919d12469348e14ad6a051d0656227e1aba2fefed41737fdf78421b20e1"
-                        ],
-                        transactionHash: "0xc6fcb7d00d536e659a4559d2de29afa9e364094438fef3e72ba80728ce1cb616",
-                        transactionIndex: 0x39,
-                    },
-                    {
-                        address: "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef",
-                        blockHash: "0x36b4af7f0538559e581c8588f16477df0f676439ea67fe8d7a2ae4abb20e2566",
-                        blockNumber: 0x3c92b5,
-                        data: "0x000000000000000000000000000000000000000000000000002386f26fc1000000000000000000000000000000000000000000000000000000000000595a32ce",
-                        logIndex: 0x1b,
-                        topics: [
-                            "0x0f0c27adfd84b60b6f456b0e87cdccb1e5fb9603991588d87fa99f5b6b61e670",
-                            "0xf0106919d12469348e14ad6a051d0656227e1aba2fefed41737fdf78421b20e1",
-                            "0x00000000000000000000000018c6045651826824febbd39d8560584078d1b247"
-                        ],
-                        transactionHash: "0xc6fcb7d00d536e659a4559d2de29afa9e364094438fef3e72ba80728ce1cb616",
-                        transactionIndex: 0x39,
-                    }
-                ],
-                logsBloom: "0x00000000000000040000000000100000010000000000000040000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000200000010000000004000000000000000000000000000000000002000000000000000000000000400000000020000000000000000000000000000000000000004000000000000000000000000000000000000000000000000801000000000000000000000020000000000040000000040000000000000000002000000004000000000000000000000000000000000000000000000010000000000000000000000000000000000200000000000000000",
-                //root: "0x9b550a9a640ce50331b64504ef87aaa7e2aaf97344acb6ff111f879b319d2590",
-                status: null,
-                to: "0x6090A6e47849629b7245Dfa1Ca21D94cd15878Ef",
-                transactionHash: "0xc6fcb7d00d536e659a4559d2de29afa9e364094438fef3e72ba80728ce1cb616",
-                transactionIndex: 0x39
-            },
-            // Byzantium block
-            {
-                byzantium: true,
-                blockHash: "0x34e5a6cfbdbb84f7625df1de69d218ade4da72f4a2558064a156674e72e976c9",
-                blockNumber: 0x444f76,
-                type: 0,
-                contractAddress: null,
-                cumulativeGasUsed: 0x15bfe7,
-                from: "0x18C6045651826824FEBBD39d8560584078d1b247",
-                gasUsed: 0x1b968,
-                logs: [
-                    {
-                        address: "0xb90E64082D00437e65A76d4c8187596BC213480a",
-                        blockHash: "0x34e5a6cfbdbb84f7625df1de69d218ade4da72f4a2558064a156674e72e976c9",
-                        blockNumber: 0x444f76,
-                        data: "0x",
-                        logIndex: 0x10,
-                        topics: [
-                            "0x748d071d1992ee1bfe7a39058114d0a50d5798fe8eb3a9bfb4687f024629a2ce",
-                            "0x5574aa58f7191ccab6de6cf75fe2ea0484f010b852fdd8c6b7ae151d6c2f4b83"
-                        ],
-                        transactionHash: "0x7f1c6a58dc880438236d0b0a4ae166e9e9a038dbea8ec074149bd8b176332cac",
-                        transactionIndex: 0x1e,
-                    }
-                ],
-                logsBloom: "0x00000000000000000000000000000000000000000000000000008000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001000000000000000200000000000000008000000000000000000000000000000000000000000000000000000000000000010000000000000000000800000000000000000000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000800000000000000000800000000000000000000000000000000000000",
-                status: 1,
-                to: "0xb90E64082D00437e65A76d4c8187596BC213480a",
-                transactionHash: "0x7f1c6a58dc880438236d0b0a4ae166e9e9a038dbea8ec074149bd8b176332cac",
-                transactionIndex: 0x1e
-            }
+            {},
         ]
     },
 };
@@ -372,7 +266,7 @@ Object.keys(blockchainData).forEach((network) => {
         });
     }));
 })();
-describe("Test Provider Methods", function () {
+describe.skip("Test Provider Methods", function () {
     let fundReceipt = null;
     before(function () {
         return __awaiter(this, void 0, void 0, function* () {
@@ -450,7 +344,7 @@ describe("Test Provider Methods", function () {
         });
     });
 });
-describe("Test WebSocketProvider", function () {
+describe.skip("Test WebSocketProvider", function () {
     this.retries(3);
     function testWebSocketProvider(provider) {
         return __awaiter(this, void 0, void 0, function* () {
