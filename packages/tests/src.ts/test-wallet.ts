@@ -308,7 +308,11 @@ describe("Serialize Transactions", function() {
         quais.utils.serializeTransaction({
             gasLimit: "0x1",
             gasPrice: "0x1",
-            value: "0x1"
+            value: "0x1",
+            maxPriorityFeePerGas: "0x1",
+            maxFeePerGas: "0x1",
+            type: 0,
+            //nonce: 0,
         });
         //console.log(result);
     });

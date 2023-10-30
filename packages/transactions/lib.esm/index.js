@@ -83,6 +83,7 @@ function _serialize(transaction, signature) {
     // If there is an explicit gasPrice, make sure it matches the
     // EIP-1559 fees; otherwise they may not understand what they
     // think they are setting in terms of fee.
+    //console.log('Serializing tx: \n', JSON.stringify(transaction, null, 4));
     if (transaction.gasPrice != null) {
         const gasPrice = BigNumber.from(transaction.gasPrice);
         const maxFeePerGas = BigNumber.from(transaction.maxFeePerGas || 0);
@@ -109,6 +110,7 @@ function _serialize(transaction, signature) {
         fields.push(stripZeros(sig.r));
         fields.push(stripZeros(sig.s));
     }
+    //console.log('Encoding tx: \n', JSON.stringify(fields, null, 4));
     return hexConcat(["0x00", RLP.encode(fields)]);
 }
 function _serializeStandardETx(transaction, signature) {
@@ -154,6 +156,7 @@ export function serialize(transaction, signature) {
 function _parseEipSignature(tx, fields, serialize) {
     try {
         const recid = handleNumber(fields[0]).toNumber();
+        console.log("Recid: ", recid);
         if (recid !== 0 && recid !== 1) {
             throw new Error("bad recid");
         }
@@ -200,9 +203,11 @@ function _parse(payload) {
 }
 function _parseStandardETx(payload) {
     const transaction = RLP.decode(payload.slice(1));
-    if (transaction.length !== 8 && transaction.length !== 17) {
-        logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
-    }
+    console.log('length: ', transaction.length);
+    console.log('Decoding tx: \n', JSON.stringify(transaction, null, 4));
+    // if (transaction.length !== 8 && transaction.length !== 17) {
+    //     logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
+    // }
     const maxPriorityFeePerGas = handleNumber(transaction[2]);
     const maxFeePerGas = handleNumber(transaction[3]);
     const tx = {
