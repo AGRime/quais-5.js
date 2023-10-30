@@ -46,7 +46,8 @@ describe('Test JSON Wallets', function () {
                     assert.equal(wallet2.privateKey, test.privateKey, 'generated correct private key - ' + wallet2.privateKey);
                 }
                 if (test.mnemonic) {
-                    assert.equal(wallet.mnemonic.phrase, test.mnemonic, 'mnemonic enabled encrypted wallet has a mnemonic phrase');
+                    const walletMnemonic = yield quais.Wallet.fromMnemonic(test.mnemonic);
+                    assert.equal(walletMnemonic.mnemonic.phrase, test.mnemonic, 'mnemonic enabled encrypted wallet has a mnemonic phrase');
                 }
             });
         });

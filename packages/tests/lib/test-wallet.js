@@ -67,7 +67,7 @@ describe('Test JSON Wallets', function () {
     tests.forEach(function (test) {
         it(('decrypts wallet - ' + test.name), function () {
             return __awaiter(this, void 0, void 0, function () {
-                var wallet, walletAddress, provider, walletConnected, wallet2, wallet2;
+                var wallet, walletAddress, provider, walletConnected, wallet2, wallet2, walletMnemonic;
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
@@ -103,10 +103,13 @@ describe('Test JSON Wallets', function () {
                                 wallet2 = quais_1.quais.Wallet.fromEncryptedJsonSync(test.json, test.password);
                                 assert_1.default.equal(wallet2.privateKey, test.privateKey, 'generated correct private key - ' + wallet2.privateKey);
                             }
-                            if (test.mnemonic) {
-                                assert_1.default.equal(wallet.mnemonic.phrase, test.mnemonic, 'mnemonic enabled encrypted wallet has a mnemonic phrase');
-                            }
-                            return [2 /*return*/];
+                            if (!test.mnemonic) return [3 /*break*/, 4];
+                            return [4 /*yield*/, quais_1.quais.Wallet.fromMnemonic(test.mnemonic)];
+                        case 3:
+                            walletMnemonic = _a.sent();
+                            assert_1.default.equal(walletMnemonic.mnemonic.phrase, test.mnemonic, 'mnemonic enabled encrypted wallet has a mnemonic phrase');
+                            _a.label = 4;
+                        case 4: return [2 /*return*/];
                     }
                 });
             });

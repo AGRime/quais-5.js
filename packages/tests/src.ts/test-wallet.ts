@@ -60,7 +60,8 @@ describe('Test JSON Wallets', function() {
             }
 
             if (test.mnemonic) {
-                assert.equal(wallet.mnemonic.phrase, test.mnemonic,
+                const walletMnemonic = await quais.Wallet.fromMnemonic(test.mnemonic);
+                assert.equal(walletMnemonic.mnemonic.phrase, test.mnemonic,
                     'mnemonic enabled encrypted wallet has a mnemonic phrase');
             }
         });
