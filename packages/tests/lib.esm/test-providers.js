@@ -94,14 +94,17 @@ describe("Test Providers", function () {
         function fetchRPCTransaction(txHash) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
-                    const response = yield axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
-                        jsonrpc: "2.0",
-                        method: "quai_getBlockByNumber",
-                        params: [
-                            txHash,
-                        ],
-                        id: 1
-                    });
+                    let response;
+                    do {
+                        response = yield axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
+                            jsonrpc: "2.0",
+                            method: "quai_getTransactionByHash",
+                            params: [
+                                txHash,
+                            ],
+                            id: 1
+                        });
+                    } while (response.data.result.blockHash == null);
                     return response.data.result;
                 }
                 catch (error) {
@@ -112,12 +115,15 @@ describe("Test Providers", function () {
         function getRPCGasPrice(url) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
-                    const response = yield axios.post(url || "http://localhost:8610", {
-                        jsonrpc: "2.0",
-                        method: "quai_gasPrice",
-                        params: [],
-                        id: 1
-                    });
+                    let response;
+                    do {
+                        response = yield axios.post(url || "http://localhost:8610", {
+                            jsonrpc: "2.0",
+                            method: "quai_gasPrice",
+                            params: [],
+                            id: 1
+                        });
+                    } while (response.data.result == null);
                     return response.data.result;
                 }
                 catch (error) {
@@ -128,24 +134,28 @@ describe("Test Providers", function () {
         function sendTransaction(to) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
-                    const prefix = to.substring(0, 4);
-                    const typeValue = (Number(prefix) > 29) ? 2 : 0;
-                    const gas = yield getRPCGasPrice(process.env.CYPRUS1URL);
-                    let tx = {
-                        from: walletWithProvider.address,
-                        to,
-                        value: quais.utils.parseEther('0.01'),
-                        gasPrice: gas,
-                        maxFeePerGas: gas,
-                        maxPriorityFeePerGas: quais.utils.parseUnits('1', 'gwei'),
-                        nonce: yield globalCyprus1Provider.getTransactionCount(walletWithProvider.address, 'latest'),
-                        data: '',
-                        type: typeValue,
-                        gasLimit: typeValue == 0 ? 21000 : 42000,
-                        chainId: Number(process.env.CHAINID),
-                    };
-                    const txResponse = yield walletWithProvider.sendTransaction(tx);
-                    yield waiter(5000);
+                    let txResponse;
+                    let typeValue = 0;
+                    do {
+                        const prefix = to.substring(0, 4);
+                        typeValue = (Number(prefix) > 29) ? 2 : 0;
+                        const gas = yield getRPCGasPrice(process.env.CYPRUS1URL);
+                        let tx = {
+                            from: walletWithProvider.address,
+                            to,
+                            value: quais.utils.parseEther('0.01'),
+                            gasPrice: gas,
+                            maxFeePerGas: gas,
+                            maxPriorityFeePerGas: quais.utils.parseUnits('1', 'gwei'),
+                            nonce: yield globalCyprus1Provider.getTransactionCount(walletWithProvider.address, 'latest'),
+                            data: '',
+                            type: typeValue,
+                            gasLimit: typeValue == 0 ? 21000 : 42000,
+                            chainId: Number(process.env.CHAINID),
+                        };
+                        txResponse = yield walletWithProvider.sendTransaction(tx);
+                        yield waiter(5000);
+                    } while (txResponse.hash == null);
                     console.log(`Transaction hash for type ${typeValue}: `, txResponse.hash);
                     return txResponse;
                 }
@@ -158,15 +168,18 @@ describe("Test Providers", function () {
         function fetchRPCBalance(address, url) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
-                    const response = yield axios.post(url, {
-                        jsonrpc: "2.0",
-                        method: "quai_getBalance",
-                        params: [
-                            address,
-                            'latest'
-                        ],
-                        id: 1
-                    });
+                    let response;
+                    do {
+                        response = yield axios.post(url, {
+                            jsonrpc: "2.0",
+                            method: "quai_getBalance",
+                            params: [
+                                address,
+                                'latest'
+                            ],
+                            id: 1
+                        });
+                    } while (response.data.result == null);
                     return response.data.result;
                 }
                 catch (error) {
@@ -177,15 +190,18 @@ describe("Test Providers", function () {
         function fetchRPCBlock(blockNumber) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
-                    const response = yield axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
-                        jsonrpc: "2.0",
-                        method: "quai_getBlockByNumber",
-                        params: [
-                            blockNumber || '0xA',
-                            false
-                        ],
-                        id: 1
-                    });
+                    let response;
+                    do {
+                        response = yield axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
+                            jsonrpc: "2.0",
+                            method: "quai_getBlockByNumber",
+                            params: [
+                                blockNumber || '0xA',
+                                false
+                            ],
+                            id: 1
+                        });
+                    } while (response.data.result.hash == null);
                     return response.data.result;
                 }
                 catch (error) {
@@ -196,14 +212,18 @@ describe("Test Providers", function () {
         function fetchRPCTxReceipt(hash, url) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
-                    const response = yield axios.post(url, {
-                        jsonrpc: "2.0",
-                        method: "quai_getTransactionReceipt",
-                        params: [
-                            hash
-                        ],
-                        id: 1
-                    });
+                    let response;
+                    do {
+                        response = yield axios.post(url, {
+                            jsonrpc: "2.0",
+                            method: "quai_getTransactionReceipt",
+                            params: [
+                                hash
+                            ],
+                            id: 1
+                        });
+                        waiter(5000);
+                    } while (response.data.result.blockHash == null);
                     return response.data.result;
                 }
                 catch (error) {
@@ -216,11 +236,7 @@ describe("Test Providers", function () {
             // globalCyprus2Provider = await new quais.providers.JsonRpcProvider(process.env.CYPRUS2URL || "http://localhost:8542");
             walletWithProvider = yield new quais.Wallet(hre.network.config.accounts[0], globalCyprus1Provider);
             const resBlock = yield fetchRPCBlock('0xA');
-            qrc20Contract = yield deployQRC20();
-            //await qrc20Contract.deployTransaction.wait();
-            //console.log('Deploy Transaction: ', qrc20Contract.deployTransaction);
-            yield waiter(30000);
-            deployTx = yield fetchRPCTransaction(qrc20Contract.deployTransaction.hash);
+            //Format block expected response
             block = {
                 hash: resBlock.hash,
                 number: resBlock.number.map((stringNumber) => Number(stringNumber)),
@@ -252,6 +268,32 @@ describe("Test Providers", function () {
                 subManifest: resBlock.subManifest,
                 totalEntropy: bnify(resBlock.totalEntropy),
             };
+            qrc20Contract = yield deployQRC20();
+            yield waiter(30000);
+            deployTx = yield fetchRPCTransaction(qrc20Contract.deployTransaction.hash);
+            //format deploy transaction
+            deployTx = {
+                hash: deployTx.hash,
+                nonce: Number(deployTx.nonce),
+                blockHash: deployTx.blockHash,
+                blockNumber: Number(deployTx.blockNumber),
+                transactionIndex: Number(deployTx.transactionIndex),
+                from: deployTx.from,
+                to: deployTx.to,
+                value: bnify(deployTx.value),
+                gas: bnify(deployTx.gas),
+                maxFeePerGas: bnify(deployTx.maxFeePerGas),
+                maxPriorityFeePerGas: bnify(deployTx.maxPriorityFeePerGas),
+                data: deployTx.input,
+                type: deployTx.type,
+                chainId: Number(deployTx.chainId),
+                accessList: deployTx.accessList,
+                r: deployTx.r,
+                s: deployTx.s,
+                v: deployTx.v,
+                etxAccessList: null,
+                confirmations: 1,
+            };
         }));
         it('should fetch balance after internal tx', function () {
             return __awaiter(this, void 0, void 0, function* () {
@@ -263,9 +305,10 @@ describe("Test Providers", function () {
                 assert.equal(actualBal, Number(expectedBal));
             });
         });
-        it.skip('should fetch deploy contract transaction', function () {
+        it('should fetch deploy contract transaction', function () {
             return __awaiter(this, void 0, void 0, function* () {
                 const tx = yield globalCyprus1Provider.getTransaction(deployTx.hash);
+                delete tx.wait;
                 console.log("Expected:", JSON.stringify(deployTx, null, 2));
                 console.log("Actual:", JSON.stringify(tx, null, 2));
                 equals('Fetch Contract deployment TX', tx, deployTx);

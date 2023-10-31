@@ -123,22 +123,28 @@ describe("Test Providers", function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            _a.trys.push([0, 2, , 3]);
-                            return [4 /*yield*/, axios_1.default.post(process.env.CYPRUS1URL || "http://localhost:8610", {
-                                    jsonrpc: "2.0",
-                                    method: "quai_getBlockByNumber",
-                                    params: [
-                                        txHash,
-                                    ],
-                                    id: 1
-                                })];
-                        case 1:
-                            response = _a.sent();
-                            return [2 /*return*/, response.data.result];
+                            _a.trys.push([0, 5, , 6]);
+                            response = void 0;
+                            _a.label = 1;
+                        case 1: return [4 /*yield*/, axios_1.default.post(process.env.CYPRUS1URL || "http://localhost:8610", {
+                                jsonrpc: "2.0",
+                                method: "quai_getTransactionByHash",
+                                params: [
+                                    txHash,
+                                ],
+                                id: 1
+                            })];
                         case 2:
+                            response = _a.sent();
+                            _a.label = 3;
+                        case 3:
+                            if (response.data.result.blockHash == null) return [3 /*break*/, 1];
+                            _a.label = 4;
+                        case 4: return [2 /*return*/, response.data.result];
+                        case 5:
                             error_1 = _a.sent();
                             throw new Error("Error fetching block: ".concat(error_1.message));
-                        case 3: return [2 /*return*/];
+                        case 6: return [2 /*return*/];
                     }
                 });
             });
@@ -149,36 +155,46 @@ describe("Test Providers", function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            _a.trys.push([0, 2, , 3]);
-                            return [4 /*yield*/, axios_1.default.post(url || "http://localhost:8610", {
-                                    jsonrpc: "2.0",
-                                    method: "quai_gasPrice",
-                                    params: [],
-                                    id: 1
-                                })];
-                        case 1:
-                            response = _a.sent();
-                            return [2 /*return*/, response.data.result];
+                            _a.trys.push([0, 5, , 6]);
+                            response = void 0;
+                            _a.label = 1;
+                        case 1: return [4 /*yield*/, axios_1.default.post(url || "http://localhost:8610", {
+                                jsonrpc: "2.0",
+                                method: "quai_gasPrice",
+                                params: [],
+                                id: 1
+                            })];
                         case 2:
+                            response = _a.sent();
+                            _a.label = 3;
+                        case 3:
+                            if (response.data.result == null) return [3 /*break*/, 1];
+                            _a.label = 4;
+                        case 4: return [2 /*return*/, response.data.result];
+                        case 5:
                             error_2 = _a.sent();
                             throw new Error("Error fetching block: ".concat(error_2.message));
-                        case 3: return [2 /*return*/];
+                        case 6: return [2 /*return*/];
                     }
                 });
             });
         }
         function sendTransaction(to) {
             return __awaiter(this, void 0, void 0, function () {
-                var prefix, typeValue, gas, tx, txResponse, e_1;
+                var txResponse, typeValue, prefix, gas, tx, e_1;
                 var _a;
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0:
-                            _b.trys.push([0, 5, , 6]);
+                            _b.trys.push([0, 8, , 9]);
+                            txResponse = void 0;
+                            typeValue = 0;
+                            _b.label = 1;
+                        case 1:
                             prefix = to.substring(0, 4);
                             typeValue = (Number(prefix) > 29) ? 2 : 0;
                             return [4 /*yield*/, getRPCGasPrice(process.env.CYPRUS1URL)];
-                        case 1:
+                        case 2:
                             gas = _b.sent();
                             _a = {
                                 from: walletWithProvider.address,
@@ -189,7 +205,7 @@ describe("Test Providers", function () {
                                 maxPriorityFeePerGas: quais_1.quais.utils.parseUnits('1', 'gwei')
                             };
                             return [4 /*yield*/, globalCyprus1Provider.getTransactionCount(walletWithProvider.address, 'latest')];
-                        case 2:
+                        case 3:
                             tx = (_a.nonce = _b.sent(),
                                 _a.data = '',
                                 _a.type = typeValue,
@@ -197,18 +213,23 @@ describe("Test Providers", function () {
                                 _a.chainId = Number(process.env.CHAINID),
                                 _a);
                             return [4 /*yield*/, walletWithProvider.sendTransaction(tx)];
-                        case 3:
+                        case 4:
                             txResponse = _b.sent();
                             return [4 /*yield*/, waiter(5000)];
-                        case 4:
+                        case 5:
                             _b.sent();
+                            _b.label = 6;
+                        case 6:
+                            if (txResponse.hash == null) return [3 /*break*/, 1];
+                            _b.label = 7;
+                        case 7:
                             console.log("Transaction hash for type ".concat(typeValue, ": "), txResponse.hash);
                             return [2 /*return*/, txResponse];
-                        case 5:
+                        case 8:
                             e_1 = _b.sent();
                             console.error('Failed to send Transaction: ', e_1);
                             return [2 /*return*/, null];
-                        case 6: return [2 /*return*/];
+                        case 9: return [2 /*return*/];
                     }
                 });
             });
@@ -219,23 +240,29 @@ describe("Test Providers", function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            _a.trys.push([0, 2, , 3]);
-                            return [4 /*yield*/, axios_1.default.post(url, {
-                                    jsonrpc: "2.0",
-                                    method: "quai_getBalance",
-                                    params: [
-                                        address,
-                                        'latest'
-                                    ],
-                                    id: 1
-                                })];
-                        case 1:
-                            response = _a.sent();
-                            return [2 /*return*/, response.data.result];
+                            _a.trys.push([0, 5, , 6]);
+                            response = void 0;
+                            _a.label = 1;
+                        case 1: return [4 /*yield*/, axios_1.default.post(url, {
+                                jsonrpc: "2.0",
+                                method: "quai_getBalance",
+                                params: [
+                                    address,
+                                    'latest'
+                                ],
+                                id: 1
+                            })];
                         case 2:
+                            response = _a.sent();
+                            _a.label = 3;
+                        case 3:
+                            if (response.data.result == null) return [3 /*break*/, 1];
+                            _a.label = 4;
+                        case 4: return [2 /*return*/, response.data.result];
+                        case 5:
                             error_3 = _a.sent();
                             throw new Error("Error fetching block: ".concat(error_3.message));
-                        case 3: return [2 /*return*/];
+                        case 6: return [2 /*return*/];
                     }
                 });
             });
@@ -246,23 +273,29 @@ describe("Test Providers", function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            _a.trys.push([0, 2, , 3]);
-                            return [4 /*yield*/, axios_1.default.post(process.env.CYPRUS1URL || "http://localhost:8610", {
-                                    jsonrpc: "2.0",
-                                    method: "quai_getBlockByNumber",
-                                    params: [
-                                        blockNumber || '0xA',
-                                        false
-                                    ],
-                                    id: 1
-                                })];
-                        case 1:
-                            response = _a.sent();
-                            return [2 /*return*/, response.data.result];
+                            _a.trys.push([0, 5, , 6]);
+                            response = void 0;
+                            _a.label = 1;
+                        case 1: return [4 /*yield*/, axios_1.default.post(process.env.CYPRUS1URL || "http://localhost:8610", {
+                                jsonrpc: "2.0",
+                                method: "quai_getBlockByNumber",
+                                params: [
+                                    blockNumber || '0xA',
+                                    false
+                                ],
+                                id: 1
+                            })];
                         case 2:
+                            response = _a.sent();
+                            _a.label = 3;
+                        case 3:
+                            if (response.data.result.hash == null) return [3 /*break*/, 1];
+                            _a.label = 4;
+                        case 4: return [2 /*return*/, response.data.result];
+                        case 5:
                             error_4 = _a.sent();
                             throw new Error("Error fetching block: ".concat(error_4.message));
-                        case 3: return [2 /*return*/];
+                        case 6: return [2 /*return*/];
                     }
                 });
             });
@@ -273,22 +306,29 @@ describe("Test Providers", function () {
                 return __generator(this, function (_a) {
                     switch (_a.label) {
                         case 0:
-                            _a.trys.push([0, 2, , 3]);
-                            return [4 /*yield*/, axios_1.default.post(url, {
-                                    jsonrpc: "2.0",
-                                    method: "quai_getTransactionReceipt",
-                                    params: [
-                                        hash
-                                    ],
-                                    id: 1
-                                })];
-                        case 1:
-                            response = _a.sent();
-                            return [2 /*return*/, response.data.result];
+                            _a.trys.push([0, 5, , 6]);
+                            response = void 0;
+                            _a.label = 1;
+                        case 1: return [4 /*yield*/, axios_1.default.post(url, {
+                                jsonrpc: "2.0",
+                                method: "quai_getTransactionReceipt",
+                                params: [
+                                    hash
+                                ],
+                                id: 1
+                            })];
                         case 2:
+                            response = _a.sent();
+                            waiter(5000);
+                            _a.label = 3;
+                        case 3:
+                            if (response.data.result.blockHash == null) return [3 /*break*/, 1];
+                            _a.label = 4;
+                        case 4: return [2 /*return*/, response.data.result];
+                        case 5:
                             error_5 = _a.sent();
                             throw new Error("Error fetching block: ".concat(error_5.message));
-                        case 3: return [2 /*return*/];
+                        case 6: return [2 /*return*/];
                     }
                 });
             });
@@ -313,19 +353,7 @@ describe("Test Providers", function () {
                             return [4 /*yield*/, fetchRPCBlock('0xA')];
                         case 3:
                             resBlock = _a.sent();
-                            return [4 /*yield*/, deployQRC20()];
-                        case 4:
-                            qrc20Contract = _a.sent();
-                            //await qrc20Contract.deployTransaction.wait();
-                            //console.log('Deploy Transaction: ', qrc20Contract.deployTransaction);
-                            return [4 /*yield*/, waiter(30000)];
-                        case 5:
-                            //await qrc20Contract.deployTransaction.wait();
-                            //console.log('Deploy Transaction: ', qrc20Contract.deployTransaction);
-                            _a.sent();
-                            return [4 /*yield*/, fetchRPCTransaction(qrc20Contract.deployTransaction.hash)];
-                        case 6:
-                            deployTx = _a.sent();
+                            //Format block expected response
                             block = {
                                 hash: resBlock.hash,
                                 number: resBlock.number.map(function (stringNumber) { return Number(stringNumber); }),
@@ -357,6 +385,38 @@ describe("Test Providers", function () {
                                 subManifest: resBlock.subManifest,
                                 totalEntropy: bnify(resBlock.totalEntropy),
                             };
+                            return [4 /*yield*/, deployQRC20()];
+                        case 4:
+                            qrc20Contract = _a.sent();
+                            return [4 /*yield*/, waiter(30000)];
+                        case 5:
+                            _a.sent();
+                            return [4 /*yield*/, fetchRPCTransaction(qrc20Contract.deployTransaction.hash)];
+                        case 6:
+                            deployTx = _a.sent();
+                            //format deploy transaction
+                            deployTx = {
+                                hash: deployTx.hash,
+                                nonce: Number(deployTx.nonce),
+                                blockHash: deployTx.blockHash,
+                                blockNumber: Number(deployTx.blockNumber),
+                                transactionIndex: Number(deployTx.transactionIndex),
+                                from: deployTx.from,
+                                to: deployTx.to,
+                                value: bnify(deployTx.value),
+                                gas: bnify(deployTx.gas),
+                                maxFeePerGas: bnify(deployTx.maxFeePerGas),
+                                maxPriorityFeePerGas: bnify(deployTx.maxPriorityFeePerGas),
+                                data: deployTx.input,
+                                type: deployTx.type,
+                                chainId: Number(deployTx.chainId),
+                                accessList: deployTx.accessList,
+                                r: deployTx.r,
+                                s: deployTx.s,
+                                v: deployTx.v,
+                                etxAccessList: null,
+                                confirmations: 1,
+                            };
                             return [2 /*return*/];
                     }
                 });
@@ -383,7 +443,7 @@ describe("Test Providers", function () {
                     });
                 });
             });
-            it.skip('should fetch deploy contract transaction', function () {
+            it('should fetch deploy contract transaction', function () {
                 return __awaiter(this, void 0, void 0, function () {
                     var tx;
                     return __generator(this, function (_a) {
@@ -391,6 +451,7 @@ describe("Test Providers", function () {
                             case 0: return [4 /*yield*/, globalCyprus1Provider.getTransaction(deployTx.hash)];
                             case 1:
                                 tx = _a.sent();
+                                delete tx.wait;
                                 console.log("Expected:", JSON.stringify(deployTx, null, 2));
                                 console.log("Actual:", JSON.stringify(tx, null, 2));
                                 equals('Fetch Contract deployment TX', tx, deployTx);

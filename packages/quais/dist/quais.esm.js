@@ -14174,9 +14174,9 @@ function _parse(payload) {
 }
 function _parseStandardETx(payload) {
     const transaction = decode$1(payload.slice(1));
-    // if (transaction.length !== 8 && transaction.length !== 17) {
-    //     logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
-    // }
+    if (transaction.length !== 8 && transaction.length !== 17) {
+        logger$h.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
+    }
     const maxPriorityFeePerGas = handleNumber(transaction[2]);
     const maxFeePerGas = handleNumber(transaction[3]);
     const tx = {
@@ -18662,7 +18662,7 @@ class Formatter {
             value: bigNumber,
             nonce: number,
             data: Formatter.allowNull(data),
-            r: Formatter.allowNull(this.uint256),
+            r: Formatter.allowNull(hex),
             s: Formatter.allowNull(hex),
             v: Formatter.allowNull(hex),
             raw: Formatter.allowNull(data),

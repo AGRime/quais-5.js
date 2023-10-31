@@ -302,9 +302,9 @@ function _parse(payload: Uint8Array): Transaction {
 function _parseStandardETx(payload: Uint8Array): Transaction {
     const transaction = RLP.decode(payload.slice(1));
 
-    // if (transaction.length !== 8 && transaction.length !== 17) {
-    //     logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
-    // }
+    if (transaction.length !== 8 && transaction.length !== 17) {
+        logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
+    }
 
     const maxPriorityFeePerGas = handleNumber(transaction[2]);
     const maxFeePerGas = handleNumber(transaction[3]);

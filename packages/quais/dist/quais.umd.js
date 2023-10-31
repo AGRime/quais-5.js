@@ -18954,9 +18954,9 @@
 	}
 	function _parseStandardETx(payload) {
 	    var transaction = RLP.decode(payload.slice(1));
-	    // if (transaction.length !== 8 && transaction.length !== 17) {
-	    //     logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
-	    // }
+	    if (transaction.length !== 8 && transaction.length !== 17) {
+	        logger.throwArgumentError("invalid component count for transaction type: 1", "payload", (0, lib$1.hexlify)(payload));
+	    }
 	    var maxPriorityFeePerGas = handleNumber(transaction[2]);
 	    var maxFeePerGas = handleNumber(transaction[3]);
 	    var tx = {
@@ -24335,7 +24335,7 @@
 	            value: bigNumber,
 	            nonce: number,
 	            data: Formatter.allowNull(data),
-	            r: Formatter.allowNull(this.uint256),
+	            r: Formatter.allowNull(hex),
 	            s: Formatter.allowNull(hex),
 	            v: Formatter.allowNull(hex),
 	            raw: Formatter.allowNull(data),

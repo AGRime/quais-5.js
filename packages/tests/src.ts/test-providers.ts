@@ -89,14 +89,17 @@ describe("Test Providers", async function() {
 
     async function fetchRPCTransaction(txHash: string){
         try {
-            const response = await axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
+            let response;
+            do{
+            response = await axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
             jsonrpc: "2.0",
-            method: "quai_getBlockByNumber",
+            method: "quai_getTransactionByHash",
             params: [
                txHash,
             ],
             id: 1
             });
+        } while (response.data.result.blockHash == null)
             return response.data.result;
         
         } catch (error) {
@@ -105,12 +108,15 @@ describe("Test Providers", async function() {
     }
     async function getRPCGasPrice(url:string){
         try {
-            const response = await axios.post(url || "http://localhost:8610", {
+            let response;
+            do{
+            response = await axios.post(url || "http://localhost:8610", {
                 jsonrpc: "2.0",
                 method: "quai_gasPrice",
                 params: [],
                 id: 1
             });
+        } while (response.data.result == null)
             return response.data.result;
         
         } catch (error) {
@@ -120,8 +126,11 @@ describe("Test Providers", async function() {
     
     async function sendTransaction(to: string){
         try{
+            let txResponse;
+            let typeValue = 0;
+            do{
             const prefix = to.substring(0, 4);
-            const typeValue = (Number(prefix) > 29) ? 2 : 0;
+            typeValue = (Number(prefix) > 29) ? 2 : 0;
             const gas = await getRPCGasPrice(process.env.CYPRUS1URL);
             let tx: {
                 from: string;
@@ -152,8 +161,10 @@ describe("Test Providers", async function() {
                 chainId: Number(process.env.CHAINID),
             };
             
-            const txResponse = await walletWithProvider.sendTransaction(tx);
+            txResponse = await walletWithProvider.sendTransaction(tx);
             await waiter(5000);
+        }while (txResponse.hash == null);
+
             console.log(`Transaction hash for type ${typeValue}: `, txResponse.hash);
             return txResponse;
         } catch(e){
@@ -164,7 +175,9 @@ describe("Test Providers", async function() {
 
     async function fetchRPCBalance(address: string, url: string){
         try {
-            const response = await axios.post(url, {
+            let response;
+            do{
+                response = await axios.post(url, {
             jsonrpc: "2.0",
             method: "quai_getBalance",
             params: [
@@ -173,6 +186,7 @@ describe("Test Providers", async function() {
             ],
             id: 1
             });
+        } while (response.data.result == null)
             return response.data.result;
         
         } catch (error) {
@@ -182,7 +196,9 @@ describe("Test Providers", async function() {
 
     async function fetchRPCBlock(blockNumber: string) {
         try {
-            const response = await axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
+            let response;
+            do {
+            response = await axios.post(process.env.CYPRUS1URL || "http://localhost:8610", {
             jsonrpc: "2.0",
             method: "quai_getBlockByNumber",
             params: [
@@ -191,6 +207,7 @@ describe("Test Providers", async function() {
             ],
             id: 1
             });
+        }while (response.data.result.hash == null)
             return response.data.result;
         
         } catch (error) {
@@ -200,7 +217,9 @@ describe("Test Providers", async function() {
 
     async function fetchRPCTxReceipt(hash: string ,url: string){
         try {
-            const response = await axios.post(url, {
+            let response;
+            do{
+            response = await axios.post(url, {
             jsonrpc: "2.0",
             method: "quai_getTransactionReceipt",
             params: [
@@ -208,8 +227,9 @@ describe("Test Providers", async function() {
             ],
             id: 1
             });
-            return response.data.result;
-        
+            waiter(5000);
+        } while (response.data.result.blockHash == null)
+        return response.data.result;
         } catch (error) {
             throw new Error(`Error fetching block: ${error.message}`);
         }
@@ -222,13 +242,7 @@ describe("Test Providers", async function() {
         
         walletWithProvider = await new quais.Wallet(hre.network.config.accounts[0], globalCyprus1Provider);
         const resBlock = await fetchRPCBlock('0xA');
-
-        qrc20Contract = await deployQRC20();
-        //await qrc20Contract.deployTransaction.wait();
-        //console.log('Deploy Transaction: ', qrc20Contract.deployTransaction);
-        await waiter(30000)
-        deployTx = await fetchRPCTransaction(qrc20Contract.deployTransaction.hash);
-
+        //Format block expected response
         block = {
             hash: resBlock.hash,
             number: resBlock.number.map((stringNumber: string) => Number(stringNumber)),
@@ -260,6 +274,34 @@ describe("Test Providers", async function() {
             subManifest: resBlock.subManifest,
             totalEntropy: bnify(resBlock.totalEntropy),
         }
+
+        qrc20Contract = await deployQRC20();
+        await waiter(30000)
+        deployTx = await fetchRPCTransaction(qrc20Contract.deployTransaction.hash);
+
+        //format deploy transaction
+        deployTx = {
+            hash: deployTx.hash,
+            nonce: Number(deployTx.nonce),
+            blockHash: deployTx.blockHash,
+            blockNumber: Number(deployTx.blockNumber),
+            transactionIndex: Number(deployTx.transactionIndex),
+            from: deployTx.from,
+            to: deployTx.to,
+            value: bnify(deployTx.value),
+            gas: bnify(deployTx.gas),
+            maxFeePerGas: bnify(deployTx.maxFeePerGas),
+            maxPriorityFeePerGas: bnify(deployTx.maxPriorityFeePerGas),
+            data: deployTx.input,
+            type: deployTx.type,
+            chainId: Number(deployTx.chainId),
+            accessList: deployTx.accessList,
+            r: deployTx.r,
+            s: deployTx.s,
+            v: deployTx.v,
+            etxAccessList: null,
+            confirmations: 1,
+        }
     });
 
     it('should fetch balance after internal tx', async function () {
@@ -272,9 +314,9 @@ describe("Test Providers", async function() {
         assert.equal(actualBal, Number(expectedBal));
     });
 
-    it.skip('should fetch deploy contract transaction', async function () {
+    it('should fetch deploy contract transaction', async function () {
         const tx = await globalCyprus1Provider.getTransaction(deployTx.hash);
-
+        delete tx.wait;
         console.log("Expected:", JSON.stringify(deployTx, null, 2));
         console.log("Actual:", JSON.stringify(tx, null, 2));
         equals('Fetch Contract deployment TX', tx, deployTx); 

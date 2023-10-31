@@ -49,7 +49,7 @@ var Formatter = /** @class */ (function () {
             value: bigNumber,
             nonce: number,
             data: Formatter.allowNull(data),
-            r: Formatter.allowNull(this.uint256),
+            r: Formatter.allowNull(hex),
             s: Formatter.allowNull(hex),
             v: Formatter.allowNull(hex),
             raw: Formatter.allowNull(data),
