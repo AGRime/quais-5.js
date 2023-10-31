@@ -18906,7 +18906,6 @@
 	exports.serialize = serialize;
 	function _parseEipSignature(tx, fields, serialize) {
 	    try {
-	        console.log("invalid v: ", fields[0]);
 	        var recid = handleNumber(fields[0]).toNumber();
 	        if (recid !== 0 && recid !== 1) {
 	            throw new Error("bad recid");
@@ -18954,8 +18953,6 @@
 	}
 	function _parseStandardETx(payload) {
 	    var transaction = RLP.decode(payload.slice(1));
-	    console.log('length: ', transaction.length);
-	    console.log('Decoding tx: \n', JSON.stringify(transaction, null, 4));
 	    // if (transaction.length !== 8 && transaction.length !== 17) {
 	    //     logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
 	    // }
@@ -18984,7 +18981,6 @@
 	        return tx;
 	    }
 	    tx.hash = (0, lib$4.keccak256)(payload);
-	    console.log('HERE');
 	    _parseEipSignature(tx, transaction.slice(14), _serializeStandardETx);
 	    return tx;
 	}

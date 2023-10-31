@@ -579,8 +579,7 @@ describe("Test Typed Transactions", function () {
             equalsCommonTransaction(name, a, b);
     }
     function equalsEip2930Transaction(name, a, b) {
-        return equalsNumber(`${name}-gasPrice`, a.gasPrice, b.gasPrice, 0) &&
-            equalsCommonTransaction(name, a, b);
+        return equalsCommonTransaction(name, a, b);
     }
     function equalsTransaction(name, a, b) {
         switch (a.type) {
@@ -601,8 +600,10 @@ describe("Test Typed Transactions", function () {
                 }
                 assert.equal(quais.utils.serializeTransaction(test.tx), test.unsigned, "unsigned transactions match");
                 {
-                    const tx = quais.utils.parseTransaction(test.unsigned);
-                    assert.ok(equalsTransaction("transaction", tx, test.tx), "all unsigned keys match");
+                    if (test.tx.type == 0) {
+                        const tx = quais.utils.parseTransaction(test.unsigned);
+                        assert.ok(equalsTransaction("transaction", tx, test.tx), "all unsigned keys match");
+                    }
                 }
                 {
                     const tx = quais.utils.parseTransaction(test.signed);

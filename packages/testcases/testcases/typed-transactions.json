@@ -112,7 +112,6 @@
      "gasLimit": "0xd04a",
      "maxPriorityFeePerGas": "0x42",
      "maxFeePerGas": "0x143",
-     "gasPrice": "0x570f6f1514",
      "externalGasLimit": "0x8080",
      "externalGasTip": "0x143",
      "externalGasPrice": "0x570f6f1514",
@@ -120,6 +119,10 @@
      "to": "0xa47977f43b3d5d4145af33018c96203c640d651e",
      "value": "0x9f4320",
      "chainId": 256,
+     "v": 0,
+     "r": "0xcbdbb6ad62495043a9ab7d6ec83da5233563e2ec8aa8b1db6052a166549702dd",
+     "s": "0x4e9ca0cfbbc0402b2beb1223dd0dd59a27590fbabfdb3bacfcc5e436071d761a",
+     "from": "0x5031fdd2a509152d1ead3b50c527db4e539b6bc0",
      "externalAccessList": [
         {
          "address": "0x3c3745b6229b799be30ae6650a3bd7b4dacb38c4",

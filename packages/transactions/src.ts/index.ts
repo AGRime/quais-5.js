@@ -301,8 +301,6 @@ function _parse(payload: Uint8Array): Transaction {
 
 function _parseStandardETx(payload: Uint8Array): Transaction {
     const transaction = RLP.decode(payload.slice(1));
-    console.log('length: ', transaction.length);
-    console.log('Decoding tx: \n', JSON.stringify(transaction, null, 4));
 
     // if (transaction.length !== 8 && transaction.length !== 17) {
     //     logger.throwArgumentError("invalid component count for transaction type: 1", "payload", hexlify(payload));
@@ -333,7 +331,6 @@ function _parseStandardETx(payload: Uint8Array): Transaction {
     if (transaction.length === 8) { return tx; }
 
     tx.hash = keccak256(payload);
-    console.log('HERE')
     _parseEipSignature(tx, transaction.slice(14), _serializeStandardETx);
 
     return tx;

@@ -138,12 +138,10 @@ describe('Test JSON Wallets', function () {
 describe('Test Transaction Signing and Parsing', function () {
     function checkTransaction(parsedTransaction, test) {
         var transaction = {};
-        console.log("parsedTransaction", JSON.stringify(parsedTransaction, null, 2));
         ['nonce', 'gasLimit', 'to', 'value', 'data'].forEach(function (key) {
             var expected = test[key];
             var value = parsedTransaction[key];
             if (["gasLimit", "value"].indexOf(key) >= 0) {
-                console.log('Value -' + key + '-' + value);
                 assert_1.default.ok((quais_1.quais.BigNumber.isBigNumber(value)), 'parsed into a big number - ' + key);
                 value = value.toHexString();
                 if (!expected || expected === '0x') {
@@ -179,10 +177,8 @@ describe('Test Transaction Signing and Parsing', function () {
         it(('parses and signs transaction - ' + test.name), function () {
             this.timeout(120000);
             if (test.type == 0) {
-                console.log("Parsing unsigned transaction:" + test.unsignedTransaction);
                 checkTransaction(quais_1.quais.utils.parseTransaction(test.unsignedTransaction), test);
             }
-            console.log("Parsing signed transaction:" + test.signedTransaction);
             var parsedTransaction = quais_1.quais.utils.parseTransaction(test.signedTransaction);
             checkTransaction(parsedTransaction, test);
         });
